@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { FAB, Portal } from 'react-native-paper';
+import { useNavigation } from '@react-navigation/native';
+import { FAB, Portal} from 'react-native-paper';
 
 const AddTaskFAB = () => {
   const [state, setState] = React.useState({ open: false });
@@ -7,6 +8,8 @@ const AddTaskFAB = () => {
   const onStateChange = ({ open }) => setState({ open });
 
   const { open } = state;
+
+  const navigation = useNavigation();
 
   return (
 		<Portal>
@@ -24,12 +27,12 @@ const AddTaskFAB = () => {
 					{
 						icon: 'bee',
 						label: 'Текущие дела',
-						onPress: () => console.log('Pressed email'),
+						onPress: () => navigation.navigate('Добавить текущую задачу'),
 					},
 					{
 						icon: 'calendar-sync',
 						label: 'Периодические дела',
-						onPress: () => console.log('Pressed notifications'),
+						onPress: () => navigation.navigate('Добавить текущую задачу'),
 					},
 				]}
 				onStateChange={onStateChange}
