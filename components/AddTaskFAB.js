@@ -17,7 +17,9 @@ const AddTaskFAB = () => {
 				open={open}
 				visible
 				icon='plus'
-				style={{bottom: 170, right: 10}}
+				style={{bottom: 80}}
+        backdropColor='transparent'
+				theme={{ colors: { backdrop: 'transparent' } }}
 				actions={[
 					{
 						icon: 'bullseye-arrow',

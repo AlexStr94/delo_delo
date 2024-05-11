@@ -2,7 +2,7 @@ import { View, Text, ScrollView } from 'react-native';
 import { createMaterialBottomTabNavigator } from 'react-native-paper/react-navigation';
 
 import TaskStackNavigation from './TaskStackNavigation'
-
+import { TasksScreenName } from '../constants'
 
 const BottomTab = createMaterialBottomTabNavigator()
 
@@ -21,7 +21,7 @@ function DetailsScreen() {
 export default BottomTabNavigation = () => {
   return (
     <BottomTab.Navigator >
-      <BottomTab.Screen name="Дела" component={TaskStackNavigation} options={{tabBarIcon: "format-list-checks"}} />
+      <BottomTab.Screen name={TasksScreenName} component={TaskStackNavigation} options={{tabBarIcon: "format-list-checks"}} />
       <BottomTab.Screen name="Статистика" component={DetailsScreen} options={{tabBarIcon: "chart-bar"}} />
 		</BottomTab.Navigator>
 	)

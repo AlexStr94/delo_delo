@@ -1,40 +1,87 @@
 import { useState } from "react";
-import { View, Text } from "react-native"
-import { TextInput } from 'react-native-paper'
+import { ScrollView } from "react-native"
+import { BSON } from "realm";
+import { useRealm, useObject } from '@realm/react'
+import { useNavigation } from "@react-navigation/native";
+import { Button, Card, TextInput } from 'react-native-paper'
+
+import { CurrentTask } from '../models/Tasks'
+import { CurrentTaskScreenName } from '../constants'
 
 
-const TaskName = () => {
-  const [text, setText] = useState("");
+const CurrentTaskForm = ({ task }) => {
+  const [name, setName] = useState(task ? task.name : '');
+  const [desc, setDesc] = useState(task ? task.description : '');
+
+  const realm = useRealm();
+
+  const navigation = useNavigation();
+
+  const handleAddCurrentTask = () => {
+    const uuid = new BSON.UUID()
+    realm.write(() => {
+      task = realm.create('CurrentTask', {_id: uuid, name: name, description: desc});
+    });
+    navigation.replace(CurrentTaskScreenName , params={taskId: task._id})
+  };
+
+  const handleUpdateCurrentTask = (task) => {
+    realm.write(() => {
+      task.name = name;
+      task.description = desc
+    });
+    navigation.replace(CurrentTaskScreenName , params={taskId: task._id})
+  }
 
   return (
-    <TextInput
-      label="Название задачи"
-      mode='outlined'
-      value={text}
-      onChangeText={text => setText(text)}
-    />
+    <ScrollView>
+      <Card>
+        <Card.Content>
+          <TextInput
+            label="Название задачи"
+            mode='outlined'
+            value={name}
+            onChangeText={name => setName(name)}
+          />
+          <TextInput
+            label="Описание задачи"
+            mode='outlined'
+            multiline={true}
+            value={desc}
+            onChangeText={desc => setDesc(desc)}
+          />
+        </Card.Content>
+        <Card.Actions>
+        {
+          task ? 
+          <Button 
+            icon="plus"
+            mode="contained"
+            onPress={() => handleUpdateCurrentTask(task)}
+          >
+            Изменить
+          </Button> : 
+          <Button icon="plus" mode="contained" onPress={() => handleAddCurrentTask()}>
+            Добавить
+          </Button>
+        }
+        </Card.Actions>
+      </Card>
+    </ScrollView>
   );
-};
+}
 
-const TaskDesc = () => {
-  const [text, setText] = useState("");
+
+
+export default AddCurrentTaskScreen = ({ route, navigation }) => {
+  let task
+  if (route.params){
+    const {taskId} = route.params;
+    task = useObject(CurrentTask, taskId)
+  }
 
   return (
-    <TextInput
-      label="Описание задачи"
-      mode='outlined'
-      multiline={true}
-      value={text}
-      onChangeText={text => setText(text)}
-    />
-  );
-};
-
-export default AddCurrentTaskScreen = () => {
-  return (
-    <View style={{ flex: 1, }}>
-      <TaskName></TaskName>
-      <TaskDesc></TaskDesc>
-    </View>
+    <CurrentTaskForm task={task}></CurrentTaskForm>
+    
   )
 }
