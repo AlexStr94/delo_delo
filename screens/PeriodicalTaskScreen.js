@@ -3,7 +3,7 @@ import { Avatar, Button, Card, Text } from 'react-native-paper';
 import { useRealm, useObject } from "@realm/react";
 import { PeriodicalTask } from "../models/Tasks";
 
-import { UpdatePeriodicalTaskScreenName, TaskList, weekDays } from "../constants";
+import { UpdatePeriodicalTaskScreenName, TaskListScreenName, weekDays } from "../constants";
 
 export default PeriodicalTaskScreen = ({ route, navigation }) => {
   const realm = useRealm();
@@ -30,7 +30,7 @@ export default PeriodicalTaskScreen = ({ route, navigation }) => {
     realm.write(() => {
       realm.delete(task);
     });
-    navigation.navigate(TaskList)
+    navigation.navigate(TaskListScreenName)
   }
 
   const LeftContent = props => <Avatar.Icon {...props} icon="calendar-sync" />

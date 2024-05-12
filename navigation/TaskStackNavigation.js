@@ -6,7 +6,7 @@ import CurrentTaskScreen from '../screens/CurrentTaskScreen';
 import AddPeriodicalTaskScreen from '../screens/AddPeriodicalTaskScreen';
 import PeriodicalTaskScreen from '../screens/PeriodicalTaskScreen'
 import { 
-  TaskList,
+  TaskListScreenName,
   CurrentTaskScreenName,
   AddCurrentTaskScreenName,
   UpdateCurrentTaskScreenName,
@@ -20,7 +20,7 @@ const TaskNavigation = createNativeStackNavigator()
 export default TaskStackNavigation = () => {
   return (
     <TaskNavigation.Navigator>
-      <TaskNavigation.Screen name={TaskList} component={MainScreen} />
+      <TaskNavigation.Screen name={TaskListScreenName} component={MainScreen} />
       <TaskNavigation.Screen name={AddCurrentTaskScreenName} component={AddCurrentTaskScreen} />
       <TaskNavigation.Screen name={UpdateCurrentTaskScreenName} component={AddCurrentTaskScreen} />
       <TaskNavigation.Screen name={CurrentTaskScreenName} component={CurrentTaskScreen} />

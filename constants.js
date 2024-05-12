@@ -1,5 +1,5 @@
 export const TasksScreenName = 'Дела'
-export const TaskList = 'Список дел'
+export const TaskListScreenName = 'Список дел'
 
 export const CurrentTaskScreenName = 'Текущая задача'
 export const AddCurrentTaskScreenName = 'Добавить текущую задачу'
