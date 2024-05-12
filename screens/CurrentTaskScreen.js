@@ -5,7 +5,7 @@ import { CurrentTask } from "../models/Tasks";
 
 import { UpdateCurrentTaskScreenName } from '../constants'
 
-export default TaskScreen = ({ route, navigation }) => {
+export default CurrentTaskScreen = ({ route, navigation }) => {
   const {taskId} = route.params;
   const task = useObject(CurrentTask, taskId)
   

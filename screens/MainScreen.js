@@ -5,53 +5,87 @@ import { List, Portal } from 'react-native-paper';
 
 import AddTaskFAB from '../components/AddTaskFAB'
 import GetTaskFAB from '../components/GetTaskFAB'
-import { CurrentTaskScreenName } from '../constants'
+import { CurrentTaskScreenName, PeriodicalTaskScreenName } from '../constants'
+import { useState } from 'react';
 
 
-const ListWithNames = ({query}) => {
+const ListWithCurrentTasks = () => {
+  const realm = useRealm();
   const navigation = useNavigation();
+  const currentTasksQuery = realm.objects("CurrentTask"); 
+  const [currentTasks, setCurrentTasks] = useState(currentTasksQuery)
+
+  function onCurrentTasksChange(tasks, changes) {
+    if (changes.deletions.length > 0 || changes.insertions.length > 0 || changes.newModifications.length > 0) {
+      const currentTasksQuery = realm.objects("CurrentTask"); 
+      setCurrentTasks(currentTasksQuery)
+    }
+  }
+
+  currentTasksQuery.addListener(onCurrentTasksChange)
+
   return (
-    query.map((item, index) => {
+    currentTasks.map((item, index) => {
       return (
-        <List.Item title={item.name} onLongPress={() => navigation.push(CurrentTaskScreenName , params={taskId: item._id})}/>
+        <List.Item key={item._id} title={item.name} onLongPress={() => navigation.push(CurrentTaskScreenName , params={taskId: item._id})}/>
+      );
+    })
+  )
+}
+
+const ListWithPeriodicalTasks = () => {
+  const realm = useRealm();
+  const navigation = useNavigation();
+  const periodicalTasksQuery = realm.objects("PeriodicalTask"); 
+  const [ periodicalTasks, setPeriodicalTasks] = useState(periodicalTasksQuery)
+
+  function onPeriodicalTasksChange(tasks, changes) {
+    if (changes.deletions.length > 0 || changes.insertions.length > 0 || changes.newModifications.length > 0) {
+      const periodicalTasksQuery = realm.objects("PeriodicalTask"); 
+      setPeriodicalTasks(periodicalTasksQuery)
+    }
+  }
+  periodicalTasksQuery.addListener(onPeriodicalTasksChange)
+
+  return (
+    periodicalTasks.map((item, index) => {
+      return (
+        <List.Item key={item._id} title={item.name} onLongPress={() => navigation.push(PeriodicalTaskScreenName, params={taskId: item._id})}/>
       );
     })
   )
 }
 
 export default MainScreen = () => {
-  const realm = useRealm();
-  const currentTasks = realm.objects("CurrentTask");
-  
   return (
     <Portal.Host>
-    <ScrollView>
-      <List.AccordionGroup>
-        <List.Accordion 
-          left={props => <List.Icon {...props} icon="bullseye-arrow" />}
-          title="Цели" 
-          id="1"
-        >
-          <List.Item title="Item 1" />
-        </List.Accordion>
-        <List.Accordion 
-          left={props => <List.Icon {...props} icon="bee" />}
-          title="Текущие дела" 
-          id="2"
-        >
-          <ListWithNames query={currentTasks}/>
-        </List.Accordion>
-        <List.Accordion 
-          left={props => <List.Icon {...props} icon="calendar-sync" />}
-          title="Периодические дела" 
-          id="3"
-        >
-          <List.Item title="Item 3" />
-        </List.Accordion>
-      </List.AccordionGroup>
-      <GetTaskFAB></GetTaskFAB>
-      <AddTaskFAB />
-    </ScrollView>
+      <ScrollView>
+        <List.AccordionGroup>
+          <List.Accordion 
+            left={props => <List.Icon {...props} icon="bullseye-arrow" />}
+            title="Цели" 
+            id="1"
+          >
+            <List.Item title="Item 1" />
+          </List.Accordion>
+          <List.Accordion 
+            left={props => <List.Icon {...props} icon="bee" />}
+            title="Текущие дела" 
+            id="2"
+          >
+            <ListWithCurrentTasks/>
+          </List.Accordion>
+          <List.Accordion 
+            left={props => <List.Icon {...props} icon="calendar-sync" />}
+            title="Периодические дела" 
+            id="3"
+          >
+            <ListWithPeriodicalTasks />
+          </List.Accordion>
+        </List.AccordionGroup>
+        <GetTaskFAB></GetTaskFAB>
+        <AddTaskFAB />
+      </ScrollView>
     </Portal.Host>
   )
 }

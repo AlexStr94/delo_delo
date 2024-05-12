@@ -55,7 +55,7 @@ const CurrentTaskForm = ({ task }) => {
         {
           task ? 
           <Button 
-            icon="plus"
+            icon="pencil"
             mode="contained"
             onPress={() => handleUpdateCurrentTask(task)}
           >

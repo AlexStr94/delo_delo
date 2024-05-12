@@ -9,14 +9,14 @@ import {RealmProvider} from '@realm/react';
 import App from './App';
 import {name as appName} from './app.json';
 
-import { CurrentTask } from './models/Tasks'
+import { CurrentTask, PeriodicalTask} from './models/Tasks'
 
 
 export default function Main() {
     return (
       <RealmProvider 
         deleteRealmIfMigrationNeeded={true}  // Только для разработки! Чтобы не создавать миграции
-      schema={[CurrentTask]}
+      schema={[CurrentTask, PeriodicalTask]}
       >
         <PaperProvider theme={MD3LightTheme}>
           <App />

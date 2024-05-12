@@ -2,6 +2,8 @@ import * as React from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { FAB, Portal} from 'react-native-paper';
 
+import {AddPeriodicalTaskScreenName } from '../constants'
+
 const AddTaskFAB = () => {
   const [state, setState] = React.useState({ open: false });
 
@@ -34,7 +36,7 @@ const AddTaskFAB = () => {
 					{
 						icon: 'calendar-sync',
 						label: 'Периодические дела',
-						onPress: () => navigation.navigate('Добавить текущую задачу'),
+						onPress: () => navigation.navigate(AddPeriodicalTaskScreenName),
 					},
 				]}
 				onStateChange={onStateChange}
