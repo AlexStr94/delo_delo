@@ -20,7 +20,7 @@ export default CurrentTaskScreen = ({ route, navigation }) => {
 
   const LeftContent = props => <Avatar.Icon {...props} icon="bee" />
   return (
-    <ScrollView>
+    <ScrollView style={{margin: 10}}>
       <Card>
         <Card.Title title={task.name} left={LeftContent} />
         <Card.Content>

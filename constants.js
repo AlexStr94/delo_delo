@@ -9,6 +9,8 @@ export const PeriodicalTaskScreenName = 'Периодическая задача
 export const AddPeriodicalTaskScreenName = 'Добавить периодическую задачу'
 export const UpdatePeriodicalTaskScreenName = 'Изменить периодическую задачу'
 
+export const TodayWorkScreenName = 'Сегодня'
+
 export const periodicalTaskTypes = [
   {
     value: 'week',

@@ -12,12 +12,14 @@ import { useState } from 'react';
 const ListWithCurrentTasks = () => {
   const realm = useRealm();
   const navigation = useNavigation();
-  const currentTasksQuery = realm.objects("CurrentTask"); 
-  const [currentTasks, setCurrentTasks] = useState(currentTasksQuery)
+  const currentTasksQuery = realm.objects("CurrentTask")
+    .filtered('archive == $0', false); 
+  const [currentTasks, setCurrentTasks] = useState(currentTasksQuery);
 
   function onCurrentTasksChange(tasks, changes) {
     if (changes.deletions.length > 0 || changes.insertions.length > 0 || changes.newModifications.length > 0) {
-      const currentTasksQuery = realm.objects("CurrentTask"); 
+      const currentTasksQuery = realm.objects("CurrentTask")
+        .filtered('archive == $0', false); 
       setCurrentTasks(currentTasksQuery)
     }
   }
@@ -36,12 +38,14 @@ const ListWithCurrentTasks = () => {
 const ListWithPeriodicalTasks = () => {
   const realm = useRealm();
   const navigation = useNavigation();
-  const periodicalTasksQuery = realm.objects("PeriodicalTask"); 
+  const periodicalTasksQuery = realm.objects("PeriodicalTask")
+    .filtered('archive == $0', false); 
   const [ periodicalTasks, setPeriodicalTasks] = useState(periodicalTasksQuery)
 
   function onPeriodicalTasksChange(tasks, changes) {
     if (changes.deletions.length > 0 || changes.insertions.length > 0 || changes.newModifications.length > 0) {
-      const periodicalTasksQuery = realm.objects("PeriodicalTask"); 
+      const periodicalTasksQuery = realm.objects("PeriodicalTask")
+        .filtered('archive == $0', false); 
       setPeriodicalTasks(periodicalTasksQuery)
     }
   }

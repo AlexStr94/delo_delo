@@ -61,13 +61,14 @@ export default AddPeriodicalTaskScreen = ({ route, navigation }) => {
   const handleAddPeriodicalTask = () => {
     // добавить проверку, что нужные данные введены
     const uuid = new BSON.UUID()
+    let daysCopy = days
     let daysNum = []
-    if (days.startsWith(',')) {
-      days = days.slice(1)
+    if (daysCopy.startsWith(',')) {
+      daysCopy = daysCopy.slice(1)
     }
-    if (days) {
+    if (daysCopy) {
       daysNum = Array.from(
-        days.slice(1).split(/\s*,\s*/), (value, index) => parseInt(value)
+        daysCopy.split(/\s*,\s*/), (value, index) => parseInt(value)
       )
     }
     realm.write(() => {
