@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ScrollView } from "react-native"
+import { ScrollView, StyleSheet, View } from "react-native"
 import { BSON } from "realm";
 import { useRealm, useObject } from '@realm/react'
 import { Button, Card, TextInput } from 'react-native-paper'
@@ -49,7 +49,7 @@ export default AddCurrentTaskScreen = ({ route, navigation }) => {
 
   return (
     <ScrollView>
-      <Card>
+      <Card style={[styles.card]}>
         <Card.Content>
           <TextInput
             label="Название задачи"
@@ -57,6 +57,7 @@ export default AddCurrentTaskScreen = ({ route, navigation }) => {
             value={name}
             onChangeText={name => setName(name)}
           />
+          <View style={styles.spacerStyle} />
           <TextInput
             label="Описание задачи"
             mode='outlined'
@@ -64,6 +65,7 @@ export default AddCurrentTaskScreen = ({ route, navigation }) => {
             value={desc}
             onChangeText={desc => setDesc(desc)}
           />
+          <View style={styles.spacerStyle} />
         </Card.Content>
         <Card.Actions>
         {
@@ -84,3 +86,12 @@ export default AddCurrentTaskScreen = ({ route, navigation }) => {
     </ScrollView>
   );
 }
+
+const styles = StyleSheet.create({
+  card: {
+    margin: 10
+  },
+  spacerStyle: {
+    marginBottom: 15,
+  },
+});

@@ -1,14 +1,13 @@
 import { StyleSheet, View } from "react-native";
 import { Avatar, Button, Card, Text } from "react-native-paper";
-import { BSON } from "realm";
+import { BSON, index } from "realm";
 import { useRealm } from "@realm/react";
 import { useState } from "react";
 import { getTodayDateRange } from '../services/date'
 import { getWorkTask } from '../services/tasks'
 
 
-const getNotDoneWork = () => {
-  const realm = useRealm();
+const getNotDoneWork = (realm) => {
   const [today, tomorrow] = getTodayDateRange();
   objs = realm.objects('TaskWork')
     .filtered('done == $0 && date >= $1 && date < $2', false, today, tomorrow);
@@ -18,9 +17,7 @@ const getNotDoneWork = () => {
   return null
 }
 
-function getTasks () {
-  const realm = useRealm();
-
+function getTask (realm) {
   const currentTasksQuery = realm.objects("CurrentTask")
     .filtered('archive == $0', false); 
   const periodicalTasksQuery = realm.objects("PeriodicalTask")
@@ -39,24 +36,20 @@ function getTasks () {
       }
     }
   }
-  return tasks
+
+  let index = Math.floor(Math.random() * tasks.length)
+  console.log(index)
+  return tasks[index]
 }
 
 export default ShakerScreen = () => {
   const realm = useRealm();
 
-  const [notDoneWork, setNotDoneWork] = useState(getNotDoneWork())
-  const tasks = getTasks() 
-  const [taskIndex, setTaskIndex] = useState(0)
-  const [task, setTask] = useState(tasks[0])
+  const [notDoneWork, setNotDoneWork] = useState(getNotDoneWork(realm))
+  const [task, setTask] = useState(getTask(realm))
 
   const handleNextTask = () => {
-    if (taskIndex+1 >= tasks.length) {
-      setTaskIndex(0)
-    }else {
-      setTaskIndex(taskIndex +1)
-    }
-    setTask(tasks[taskIndex])
+    setTask(getTask(realm))
   }
 
   const handleCheckTask = () => {

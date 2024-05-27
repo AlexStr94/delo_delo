@@ -1,7 +1,8 @@
 import { useState } from "react";
+import { View } from "react-native";
 import { useRealm } from "@realm/react";
 import { useNavigation } from "@react-navigation/native";
-import { List } from "react-native-paper";
+import { List, Text } from "react-native-paper";
 
 import { GoalScreenName } from '../constants'
 
@@ -21,6 +22,20 @@ export default ListWithGoals = () => {
   }
 
   goalsQuery.addListener(onGoalsQueryChange)
+
+  if (goals.length == 0) {
+    return (
+      <View 
+        style={{
+          margin: 15,
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
+        <Text variant="bodyMedium">Вы пока не завели ни одной цели</Text>
+      </View>
+    )
+  }
   return (
     goals.map((item, index) => {
       return (

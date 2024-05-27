@@ -119,7 +119,7 @@ export default AddPeriodicalTaskScreen = ({ route, navigation }) => {
 
   return (
     <ScrollView>
-      <Card>
+      <Card style={[styles.card]}>
         <Card.Content>
           {/* <Text>Название задачи:</Text> */}
           <View style={styles.spacerStyle} />
@@ -207,6 +207,9 @@ export default AddPeriodicalTaskScreen = ({ route, navigation }) => {
 }
 
 const styles = StyleSheet.create({
+  card: {
+    margin: 10
+  },
   spacerStyle: {
     marginBottom: 15,
   },

@@ -1,8 +1,9 @@
 import { useState } from "react";
+import { View } from "react-native";
 import { BSON } from "realm";
 import { useRealm, useObject } from "@realm/react";
 import { useNavigation } from "@react-navigation/native";
-import { List } from "react-native-paper";
+import { List, Text } from "react-native-paper";
 
 import { PeriodicalTaskScreenName } from '../constants';
 import { Goal } from "../models/Tasks";
@@ -32,6 +33,19 @@ export default ListWithPeriodicalTasks = ({goalId}) => {
   }
   const [ periodicalTasks, setPeriodicalTasks] = useState(periodicalTasksQuery)
 
+  if (periodicalTasks.length == 0) {
+    return (
+      <View 
+        style={{
+          margin: 15,
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
+        <Text variant="bodyMedium">Вы пока не завели ни одной периодической задачи</Text>
+      </View>
+    )
+  }
   return (
     periodicalTasks.map((item, index) => {
       return (

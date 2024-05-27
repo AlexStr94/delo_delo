@@ -1,8 +1,9 @@
 import { useState } from "react";
+import { View } from "react-native";
 import { BSON } from "realm";
 import { useRealm, useObject} from "@realm/react";
 import { useNavigation } from "@react-navigation/native";
-import { List } from "react-native-paper";
+import { List, Text } from "react-native-paper";
 
 import { CurrentTaskScreenName } from '../constants'
 import { Goal } from '../models/Tasks'
@@ -33,7 +34,19 @@ export default ListWithCurrentTasks = ({goalId}) => {
   }
 
   const [currentTasks, setCurrentTasks] = useState(currentTasksQuery);
-
+  if (currentTasks.length == 0) {
+    return (
+      <View 
+        style={{
+          margin: 15,
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
+        <Text variant="bodyMedium">Вы пока не завели ни одной текущей задачи</Text>
+      </View>
+    )
+  }
   return (
     currentTasks.map((item, index) => {
       return (
