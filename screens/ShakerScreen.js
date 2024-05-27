@@ -17,11 +17,7 @@ const getNotDoneWork = (realm) => {
   return null
 }
 
-function getTask (realm) {
-  const currentTasksQuery = realm.objects("CurrentTask")
-    .filtered('archive == $0', false); 
-  const periodicalTasksQuery = realm.objects("PeriodicalTask")
-    .filtered('archive == $0', false);
+function getTask(currentTasksQuery, periodicalTasksQuery) {
 
   const maxLength = Math.max(currentTasksQuery.length, periodicalTasksQuery.length);
 
@@ -45,12 +41,29 @@ function getTask (realm) {
 
 export default ShakerScreen = () => {
   const realm = useRealm();
+  const currentTasksQuery = realm.objects("CurrentTask")
+    .filtered('archive == $0', false); 
+  const periodicalTasksQuery = realm.objects("PeriodicalTask")
+    .filtered('archive == $0', false);
+
+  function updateTasks (tasks, changes) {
+    if (changes.deletions.length > 0 || changes.insertions.length > 0 || changes.newModifications.length > 0) {
+      const currentTasksQuery = realm.objects("CurrentTask")
+        .filtered('archive == $0', false); 
+      const periodicalTasksQuery = realm.objects("PeriodicalTask")
+        .filtered('archive == $0', false);
+      
+      setTask(getTask(currentTasksQuery, periodicalTasksQuery))
+    }
+  }
+  currentTasksQuery.addListener(updateTasks)
+  periodicalTasksQuery.addListener(updateTasks)
 
   const [notDoneWork, setNotDoneWork] = useState(getNotDoneWork(realm))
-  const [task, setTask] = useState(getTask(realm))
+  const [task, setTask] = useState(getTask(currentTasksQuery, periodicalTasksQuery))
 
   const handleNextTask = () => {
-    setTask(getTask(realm))
+    setTask(getTask(currentTasksQuery, periodicalTasksQuery))
   }
 
   const handleCheckTask = () => {
@@ -81,14 +94,13 @@ export default ShakerScreen = () => {
     });
   }
 
-  const taskIcon = task.type ? 'calendar-sync' : 'bee'
   return (
     <View 
       style={[task ? styles.taskCard : styles.noTask]}
     >
       { task && 
       <Card>
-        <Card.Title title={task.name} left={props => <Avatar.Icon {...props} icon={taskIcon} />} />
+        <Card.Title title={task.name} left={props => <Avatar.Icon {...props} icon={task.type ? 'calendar-sync' : 'bee'} />} />
         <Card.Content>
           <Text variant="bodyMedium">{task.description}</Text>
         </Card.Content>
