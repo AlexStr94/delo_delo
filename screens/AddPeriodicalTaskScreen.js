@@ -5,16 +5,24 @@ import { useRealm, useObject } from '@realm/react'
 import { Button, Card, SegmentedButtons, Text, TextInput } from 'react-native-paper'
 import DropDown from "react-native-paper-dropdown";
 
-import { PeriodicalTask } from '../models/Tasks'
+import { Goal, PeriodicalTask } from '../models/Tasks'
 import { PeriodicalTaskScreenName, periodicalTaskTypes, weekDays, monthDays } from "../constants";
 
 export default AddPeriodicalTaskScreen = ({ route, navigation }) => {
   const realm = useRealm();
 
   let task
+  let goal
   if (route.params){
-    const {taskId} = route.params;
-    task = useObject(PeriodicalTask, taskId)
+    const {taskId, goalId} = route.params;
+    if (taskId) {
+      const taskUUID = new BSON.UUID(taskId)
+      task = useObject(PeriodicalTask, taskUUID)
+    }
+    if (goalId) {
+      const goalUUID = new BSON.UUID(goalId)
+      goal = useObject(Goal, goalUUID)
+    }
   }
 
   const [name, setName] = useState(task ? task.name : '');
@@ -29,7 +37,6 @@ export default AddPeriodicalTaskScreen = ({ route, navigation }) => {
   const [disabledButton, setDisabledButton] = useState(task ? false : true)
 
   const updateButton = () => {
-    console.log(type)
     if (name && type && number) {
       setDisabledButton(false)
     } else {
@@ -83,9 +90,11 @@ export default AddPeriodicalTaskScreen = ({ route, navigation }) => {
           days: daysNum
         }
       );
+      if (goal) {
+        goal.periodical_tasks.push(task);
+      };
     });
-    console.log(task)
-    navigation.replace(PeriodicalTaskScreenName , params={taskId: task._id})
+    navigation.replace(PeriodicalTaskScreenName , params={taskId: task._id.toHexString()})
   };
 
   const handleUpdatePeriodicalTask = () => {
@@ -98,7 +107,6 @@ export default AddPeriodicalTaskScreen = ({ route, navigation }) => {
         days.split(/\s*,\s*/), (value, index) => parseInt(value)
       )
     }
-    console.log(desc)
     realm.write(() => {
       task.name = name;
       task.description = desc;
@@ -106,7 +114,7 @@ export default AddPeriodicalTaskScreen = ({ route, navigation }) => {
       task.number = parseInt(number)
       task.days = daysNum
     });
-    navigation.replace(PeriodicalTaskScreenName , params={taskId: task._id})
+    navigation.replace(PeriodicalTaskScreenName , params={taskId: task._id.toHexString()})
   }
 
   return (
@@ -202,5 +210,4 @@ const styles = StyleSheet.create({
   spacerStyle: {
     marginBottom: 15,
   },
-
 });

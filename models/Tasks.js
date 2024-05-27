@@ -1,6 +1,28 @@
 import Realm from "realm";
 
 
+export class Goal extends Realm.Object {
+  static schema = {
+    name: 'Goal',
+    properties: {
+      _id: 'uuid',
+      name: 'string',
+      description: {
+        type: 'string',
+        optional: true,
+      },
+      current_tasks: 'CurrentTask[]',
+      periodical_tasks: 'PeriodicalTask[]',
+      archive: {
+        type: 'bool',
+        default: false
+      }
+    },
+    primaryKey: '_id',
+  };
+}
+
+
 export class CurrentTask extends Realm.Object {
   static schema = {
     name: 'CurrentTask',
@@ -10,6 +32,11 @@ export class CurrentTask extends Realm.Object {
       description: {
         type: 'string',
         optional: true,
+      },
+      goal: {
+        type: 'linkingObjects',
+        objectType: 'Goal',
+        property: 'current_tasks',
       },
       works: 'TaskWork[]',
       archive: {
@@ -37,6 +64,11 @@ export class PeriodicalTask extends Realm.Object {
         type: 'set',
         objectType: 'int',
         optional: true
+      },
+      goal: {
+        type: 'linkingObjects',
+        objectType: 'Goal',
+        property: 'periodical_tasks',
       },
       works: 'TaskWork[]',
       archive: {

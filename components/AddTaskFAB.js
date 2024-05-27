@@ -2,7 +2,7 @@ import * as React from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { FAB, Portal} from 'react-native-paper';
 
-import {AddPeriodicalTaskScreenName } from '../constants'
+import {AddGoalScreenName, AddCurrentTaskScreenName, AddPeriodicalTaskScreenName } from '../constants'
 
 const AddTaskFAB = () => {
   const [state, setState] = React.useState({ open: false });
@@ -20,18 +20,18 @@ const AddTaskFAB = () => {
 				visible
 				icon='plus'
 				style={{bottom: 80}}
-        backdropColor='transparent'
+        		backdropColor='transparent'
 				theme={{ colors: { backdrop: 'transparent' } }}
 				actions={[
 					{
 						icon: 'bullseye-arrow',
 						label: 'Цели',
-						onPress: () => console.log('Pressed star'),
+						onPress: () => navigation.navigate(AddGoalScreenName),
 					},
 					{
 						icon: 'bee',
 						label: 'Текущие дела',
-						onPress: () => navigation.navigate('Добавить текущую задачу'),
+						onPress: () => navigation.navigate(AddCurrentTaskScreenName),
 					},
 					{
 						icon: 'calendar-sync',
@@ -40,14 +40,7 @@ const AddTaskFAB = () => {
 					},
 				]}
 				onStateChange={onStateChange}
-				onPress={() => {
-					if (open) {
-						// do something if the speed dial is open
-					}
-				}}
 			/>
-			
-
 		</Portal>
   );
 };

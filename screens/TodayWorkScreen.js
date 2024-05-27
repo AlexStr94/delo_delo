@@ -33,7 +33,7 @@ const ListWithDoneWorks = () => {
       }
 
       return (
-        <List.Item key={work._id} title={task.name}/>
+        <List.Item key={work._id.toHexString()} title={task.name}/>
       );
     })
   )
@@ -66,7 +66,7 @@ const ListWithNotDoneWorks = () => {
       }
 
       return (
-        <List.Item key={work._id} title={task.name}/>
+        <List.Item key={work._id.toHexString()} title={task.name}/>
       );
     })
   )

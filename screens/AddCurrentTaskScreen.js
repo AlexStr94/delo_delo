@@ -2,27 +2,41 @@ import { useState } from "react";
 import { ScrollView } from "react-native"
 import { BSON } from "realm";
 import { useRealm, useObject } from '@realm/react'
-import { useNavigation } from "@react-navigation/native";
 import { Button, Card, TextInput } from 'react-native-paper'
 
-import { CurrentTask } from '../models/Tasks'
+import { CurrentTask, Goal } from '../models/Tasks'
 import { CurrentTaskScreenName } from '../constants'
 
 
-const CurrentTaskForm = ({ task }) => {
+export default AddCurrentTaskScreen = ({ route, navigation }) => {
+  let task
+  let goal
+  if (route.params){
+    const {taskId, goalId} = route.params;
+    if (taskId) {
+      const taskUUID = new BSON.UUID(taskId)
+      task = useObject(CurrentTask, taskUUID)
+    }
+    if (goalId) {
+      const goalUUID = new BSON.UUID(goalId)
+      goal = useObject(Goal, goalUUID)
+    }
+  }
+
   const [name, setName] = useState(task ? task.name : '');
   const [desc, setDesc] = useState(task ? task.description : '');
 
   const realm = useRealm();
 
-  const navigation = useNavigation();
-
   const handleAddCurrentTask = () => {
     const uuid = new BSON.UUID()
     realm.write(() => {
       task = realm.create('CurrentTask', {_id: uuid, name: name, description: desc});
+      if (goal) {
+        goal.current_tasks.push(task)
+      }
     });
-    navigation.replace(CurrentTaskScreenName , params={taskId: task._id})
+    navigation.replace(CurrentTaskScreenName , params={taskId: task._id.toHexString()})
   };
 
   const handleUpdateCurrentTask = (task) => {
@@ -30,7 +44,7 @@ const CurrentTaskForm = ({ task }) => {
       task.name = name;
       task.description = desc
     });
-    navigation.replace(CurrentTaskScreenName , params={taskId: task._id})
+    navigation.replace(CurrentTaskScreenName , params={taskId: task._id.toHexString()})
   }
 
   return (
@@ -69,19 +83,4 @@ const CurrentTaskForm = ({ task }) => {
       </Card>
     </ScrollView>
   );
-}
-
-
-
-export default AddCurrentTaskScreen = ({ route, navigation }) => {
-  let task
-  if (route.params){
-    const {taskId} = route.params;
-    task = useObject(CurrentTask, taskId)
-  }
-
-  return (
-    <CurrentTaskForm task={task}></CurrentTaskForm>
-    
-  )
 }

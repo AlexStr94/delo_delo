@@ -13,7 +13,7 @@ export default BottomTabNavigation = () => {
   return (
     <BottomTab.Navigator >
       <BottomTab.Screen name={TasksScreenName} component={TaskStackNavigation} options={{tabBarIcon: "format-list-checks"}} />
-      <BottomTab.Screen name="Шейкер" component={ShakerScreen} options={{tabBarIcon: "chart-bar"}} />
+      <BottomTab.Screen name="Шейкер" component={ShakerScreen} options={{tabBarIcon: "dice-multiple"}} />
       <BottomTab.Screen name={TodayWorkScreenName} component={TodayWorkScreen} options={{tabBarIcon: "briefcase-eye"}} />
 		</BottomTab.Navigator>
 	)

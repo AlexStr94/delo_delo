@@ -1,6 +1,7 @@
-import { ScrollView} from "react-native"
-import { Avatar, Button, Card, Text } from 'react-native-paper';
+import { ScrollView} from "react-native";
+import { BSON } from 'realm';
 import { useRealm, useObject } from "@realm/react";
+import { Avatar, Button, Card, Text } from 'react-native-paper';
 import { CurrentTask } from "../models/Tasks";
 
 import { UpdateCurrentTaskScreenName, TaskListScreenName } from '../constants'
@@ -9,7 +10,8 @@ export default CurrentTaskScreen = ({ route, navigation }) => {
   const realm = useRealm();
   
   const {taskId} = route.params;
-  const task = useObject(CurrentTask, taskId)
+  const taskUUID = new BSON.UUID(taskId)
+  const task = useObject(CurrentTask, taskUUID)
   
   const handleDeletePeriodicalTask = () => {
     realm.write(() => {
@@ -28,7 +30,7 @@ export default CurrentTaskScreen = ({ route, navigation }) => {
         </Card.Content>
         <Card.Actions>
         <Button icon="delete" onPress={() => handleDeletePeriodicalTask()}>Удалить</Button>
-          <Button icon="pencil" onPress={() => navigation.replace(UpdateCurrentTaskScreenName , params={taskId: taskId})} >Изменить</Button>
+          <Button icon="pencil" onPress={() => navigation.replace(UpdateCurrentTaskScreenName , params={taskId: taskId, goalId: null})} >Изменить</Button>
         </Card.Actions>
       </Card>
     </ScrollView>

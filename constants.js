@@ -1,6 +1,10 @@
 export const TasksScreenName = 'Дела'
 export const TaskListScreenName = 'Список дел'
 
+export const GoalScreenName = 'Цель'
+export const AddGoalScreenName = 'Добавить цель'
+export const UpdateGoalScreenName = 'Изменить цель'
+
 export const CurrentTaskScreenName = 'Текущая задача'
 export const AddCurrentTaskScreenName = 'Добавить текущую задачу'
 export const UpdateCurrentTaskScreenName = 'Изменить текущую задачу'
