@@ -35,10 +35,11 @@ function getTask (realm) {
         tasks.push(periodicalTasksQuery[i])
       }
     }
+  } else {
+    return null
   }
 
   let index = Math.floor(Math.random() * tasks.length)
-  console.log(index)
   return tasks[index]
 }
 
@@ -80,14 +81,14 @@ export default ShakerScreen = () => {
     });
   }
 
-  const LeftContent = props => <Avatar.Icon {...props} icon="bee" />
+  const taskIcon = task.type ? 'calendar-sync' : 'bee'
   return (
     <View 
       style={[task ? styles.taskCard : styles.noTask]}
     >
       { task && 
       <Card>
-        <Card.Title title={task.name} left={LeftContent} />
+        <Card.Title title={task.name} left={props => <Avatar.Icon {...props} icon={taskIcon} />} />
         <Card.Content>
           <Text variant="bodyMedium">{task.description}</Text>
         </Card.Content>

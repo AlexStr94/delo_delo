@@ -1,4 +1,3 @@
-import { View } from "react-native"
 import { BSON } from "realm";
 import { useObject, useRealm } from "@realm/react"
 
